@@ -1,8 +1,15 @@
+// 404-fejlhåndtering
+const notFoundHandler = (req, res, next) => {
+    res.status(404).send('404 - Siden blev ikke fundet!');
+};
 
-//bare en error handler
+// Generel fejlhåndtering
 const errorHandler = (err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Noget gik galt!');
 };
 
-module.exports = errorHandler;
+module.exports = {
+    notFoundHandler,
+    errorHandler
+};

@@ -1,17 +1,17 @@
 const express = require('express');
 const app = express();
 
-// Import middleware
+// Importér middleware
 const logger = require('./middleware/logger');
-const errorHandler = require('./middleware/errorHandler');
+const { notFoundHandler, errorHandler } = require('./middleware/errorHandler'); // Importér 404 og error handler
 
-// Import ruter
+// Importér ruter
 const characterRoutes = require('./routes/routes');
 
-// Middleware til at logge vores anmodninger
+// Middleware til at logge alle anmodninger
 app.use(logger);
 
-// Middleware til at parse/kunne bruge JSON-data
+// Middleware til at parse JSON-data
 app.use(express.json());
 
 // Ruter til Star Wars karakterer
@@ -19,10 +19,13 @@ app.use('/api', characterRoutes);
 
 // Tilføj en rute til forsiden (root /)
 app.get('/', (req, res) => {
-    res.send('Velkommen til Star Wars! skriv i browseren localhost3000/api/characters for at se Start Wars universet');
+    res.send('Velkommen til Star Wars API! Brug /api/characters for at se karakterer.');
 });
 
-// Fejlhåndtering middleware
+// 404-fejlhåndtering
+app.use(notFoundHandler);
+
+// Generel fejlhåndtering
 app.use(errorHandler);
 
 // Start serveren
